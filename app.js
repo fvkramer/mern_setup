@@ -10,6 +10,7 @@ const passport = require('passport');
 //routes
 const users = require("./routes/api/users");
 const events = require("./routes/api/events");
+const tweets = require('./routes/api/tweets');
 
 const bodyParser = require("body-parser");
 
@@ -28,6 +29,7 @@ app.use(passport.initialize());
 require('./config/passport')(passport);
 app.use("/api/users", users);
 app.use("/api", events);
+app.use('/api/tweets', tweets)
 
 
 //what port to listen on
