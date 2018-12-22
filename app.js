@@ -4,6 +4,9 @@ const express = require("express");
 const app = express();
 const db = require('./config/keys').mongoURI;
 
+//auth
+const passport = require('passport');
+
 //routes
 const users = require("./routes/api/users");
 const events = require("./routes/api/events");
@@ -18,9 +21,11 @@ mongoose
 
 //list routes
 
-app.get("/", (req, res) => res.send("Success!"));
+// app.get("/", (req, res) => res.send("Success!"));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use(passport.initialize());
+require('./config/passport')(passport);
 app.use("/api/users", users);
 app.use("/api", events);
 
