@@ -6,10 +6,19 @@ const keys = require('../../config/keys');
 const passport = require('passport');
 const router = express.Router();
 
+
+const validateRegisterInput = require("../../validation/register");
+const validateLoginInput = require("../../validation/login");
+
 router.get("/test", (req, res) => res.json({msg: "This is the users route"}));
 
 router.post("/register", (req, res) => {
+  const { errors, isValid } = validateRegisterInput(req.body);
 
+  if (!isValid) {
+    return res.status(400).json(errors);
+  }
+  
   User.findOne({ name: req.body.name }).then(user => {
     if (user) {
       errors.name = "User already exists";
@@ -50,6 +59,12 @@ router.post("/register", (req, res) => {
 });
 
 router.post("/login", (req, res) => {
+
+  const { errors, isValid } = validateLoginInput(req.body);
+
+  if (!isValid) {
+    return res.status(400).json(errors);
+  }
 
   const name = req.body.name;
   const password = req.body.password;
