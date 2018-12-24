@@ -16,7 +16,10 @@ const bodyParser = require("body-parser");
 
 
 mongoose
-  .connect(db)
+  .connect(
+    db,
+    { useNewUrlParser: true }
+  )
   .then(() => console.log("Connected to MongoDB successfully"))
   .catch(err => console.log(err));
 
@@ -27,6 +30,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(passport.initialize());
 require('./config/passport')(passport);
+app.use("/", () => console.log("Home page baby"));
 app.use("/api/users", users);
 app.use("/api", events);
 app.use('/api/tweets', tweets)
